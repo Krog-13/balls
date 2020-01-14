@@ -11,6 +11,13 @@ colors=['red','yellow','blue','green','orange']
 l = tk.Label(root, anchor='sw', bg='black', width=20,fg='white')
 l.pack()
 l['text']='0'
+his_name = tk.Entry(root, width=20)
+his_name.pack()
+his_name.insert(4, "Enter you name:")
+name = tk.Label(root, width=40, bg='black', fg='white')
+
+name.pack()
+
 i=0
 
 
@@ -35,13 +42,18 @@ class one_ball:
         print(event.x, event.y)
         if ae <= self.r:
             canv.delete(self.ball_1)
+
         else:
             print('fail', ae, self.x, self.y)
 
 
 def canv_clik(event):
+    global i
     print('I can see that', event.x, event.y)
     a.bank(event)
+    i+=1
+    l['text']=str(i)
+
 
 
 def tik_tok():
@@ -51,10 +63,13 @@ def tik_tok():
     root.after(50, tik_tok)
 def main():
     global balls,a
-    canv.bind('<Button-1>', canv_clik)
-    #balls = [one_ball() for i in range(2)]
-    a = one_ball()
-    tik_tok()
+    n = his_name.get()
+    if len(n) > 15:
+    #n = n[15:]
+        name['text'] = n
+        canv.bind('<Button-1>', canv_clik)
+        a = one_ball()
+        tik_tok()
     tk.mainloop()
 
 def score():
