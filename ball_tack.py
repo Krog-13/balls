@@ -8,21 +8,22 @@ root.geometry('600x500')
 canv = tk.Canvas(root, bg='white')
 canv.pack(fill='both', expand=2)
 colors=['red','yellow','blue','green','orange']
-l = tk.Label(root, anchor='sw', bg='black', width=20,fg='white')
+l = tk.Label(root, anchor='sw', bg='black', width=20,fg='white',text='Score')
 l.pack()
 l['text']='0'
 his_name = tk.Entry(root, width=20)
 his_name.pack()
 his_name.insert(4, "Enter you name:")
 name = tk.Label(root, width=40, bg='black', fg='white')
-
+b = tk.Button(text='Go start')
+b.pack()
 name.pack()
-
 i=0
 
 
 class one_ball:
     def __init__(self):
+        self.i = 0
         self.r = 20
         self.x = 25
         self.y = 45
@@ -37,39 +38,45 @@ class one_ball:
         canv.move(self.ball_1, self.dx, self.dy)
 
     def bank(self,event):
+        global i
         ae = sqrt(((self.x-event.x)**2) + ((self.y-event.y)**2))
         canv.itemconfig(self.ball_1, fill='green',outline='red',width=5)
-        print(event.x, event.y)
         if ae <= self.r:
             canv.delete(self.ball_1)
+            i+=1
+            l['text']=str(i)
 
         else:
-            print('fail', ae, self.x, self.y)
+            print('miss')
 
 
 def canv_clik(event):
     global i
-    print('I can see that', event.x, event.y)
     a.bank(event)
-    i+=1
-    l['text']=str(i)
+    #i+=1
+    #l['text']=str(i)
 
-
+def start(event):
+    global a
+    s = his_name.get()
+    if len(s) > 15:
+        s=s[15:]
+        name['text']='Hello' + s
+        a = one_ball()
+        tik_tok()
 
 def tik_tok():
     for i in range(1):
         a.move()
         a.show()
     root.after(50, tik_tok)
+
 def main():
     global balls,a
-    n = his_name.get()
-    if len(n) > 15:
-    #n = n[15:]
-        name['text'] = n
-        canv.bind('<Button-1>', canv_clik)
-        a = one_ball()
-        tik_tok()
+    canv.bind('<Button-1>', canv_clik)
+    b.bind('<Button-3>', start)
+    #a = one_ball()
+    #tik_tok()
     tk.mainloop()
 
 def score():
@@ -87,6 +94,8 @@ def click(event):
 
 if __name__ == '__main__':
     main()
+
+
 
 #canv.bind('<Button-3>', click)
 #tk.mainloop()
